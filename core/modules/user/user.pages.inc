@@ -80,11 +80,11 @@ function user_pass_validate($form, &$form_state) {
  * Submit handler for user_pass().
  */
 function user_pass_submit($form, &$form_state) {
-  global $language_interface;
+  global $language;
 
   $account = $form_state['values']['account'];
   // Mail one time login URL and instructions using current language.
-  $mail = _user_mail_notify('password_reset', $account, $language_interface);
+  $mail = _user_mail_notify('password_reset', $account, $language);
   if (!empty($mail)) {
     watchdog('user', 'Password reset instructions mailed to %name at %email.', array('%name' => $account->name, '%email' => $account->mail));
     backdrop_set_message(t('Further instructions have been sent to your e-mail address.'));
@@ -140,7 +140,7 @@ function user_pass_reset($uid, $timestamp, $hashed_pass) {
         backdrop_goto('user/password');
       }
       elseif ($account->uid && $timestamp >= $account->login && $timestamp <= $current && $hashed_pass == user_pass_rehash($account->pass, $timestamp, $account->login)) {
-        return backdrop_get_form('user_pass_reset_form', $account, $timestamp, $timeout);
+        return backdrop_get_form('user_pass_reset_form', $account);
       }
       else {
         backdrop_set_message(t('You have tried to use a reset password link that has either been used or is no longer valid. Please request a new one using the form below.'));
@@ -162,13 +162,10 @@ function user_pass_reset($uid, $timestamp, $hashed_pass) {
  * @ingroup forms
  * @see user_pass_reset_form_submit()
  */
-function user_pass_reset_form($form, &$form_state, $account, $timestamp, $timeout) {
+function user_pass_reset_form($form, &$form_state, $account) {
   $form['#account'] = $account;
   $form['message'] = array(
-    '#markup' => t('<p>This is a one-time login for %user_name and will expire on %expiration_date.</p><p>Click on this button to log in to the site.</p>', array('%user_name' => $account->name, '%expiration_date' => format_date($timestamp + $timeout))),
-  );
-  $form['help'] = array(
-    '#markup' => '<p>' . t('This login can be used only once.') . '</p>'
+    '#markup' => t('<p>Please enter a new password to access your account.</p>'),
   );
   $form['pass'] = array(
     '#type' => 'password_confirm',
@@ -178,7 +175,7 @@ function user_pass_reset_form($form, &$form_state, $account, $timestamp, $timeou
   );
   $form['actions']['submit'] = array(
     '#type' => 'submit',
-    '#value' => t('Log in'),
+    '#value' => t('Save password & log in'),
   );
 
   return $form;
@@ -195,8 +192,8 @@ function user_pass_reset_form_submit($form, &$form_state) {
   // user_login_finalize() also updates the login timestamp of the user, which
   // invalidates further use of the one-time login link.
   user_login_finalize();
-  backdrop_set_message(t('You have just used your one-time login link. Your password has been updated.'));
-  watchdog('user', 'User %name used one-time login link at time %timestamp.', array('%name' => $form['#account']->name, '%timestamp' => REQUEST_TIME));
+  backdrop_set_message(t('Your account password has been updated.'));
+  watchdog('user', 'User %name used one-time password reset link at time %timestamp.', array('%name' => $form['#account']->name, '%timestamp' => REQUEST_TIME));
   backdrop_goto();
 }
 
@@ -214,26 +211,6 @@ function user_logout() {
   session_destroy();
 
   backdrop_goto();
-}
-
-/**
- * Process variables for user-profile.tpl.php.
- *
- * The $variables array contains the following arguments:
- * - $account
- *
- * @see user-profile.tpl.php
- */
-function template_preprocess_user_profile(&$variables) {
-  $account = $variables['elements']['#account'];
-
-  // Helpful $user_profile variable for templates.
-  foreach (element_children($variables['elements']) as $key) {
-    $variables['user_profile'][$key] = $variables['elements'][$key];
-  }
-
-  // Preprocess fields.
-  field_attach_preprocess('user', $account, $variables['elements'], $variables);
 }
 
 /**
@@ -336,8 +313,6 @@ function user_profile_form_submit($form, &$form_state) {
     // Remove the password reset tag since a new password was saved.
     unset($_SESSION['pass_reset_'. $account->uid]);
   }
-  // Clear the page cache because pages can contain usernames and/or profile information:
-  cache_clear_all();
 
   backdrop_set_message(t('The changes have been saved.'));
 }

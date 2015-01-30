@@ -19,7 +19,7 @@
 function text_field_info() {
   return array(
     'text' => array(
-      'label' => t('Text'),
+      'label' => t('Text (short)'),
       'description' => t('This field stores varchar text in the database.'),
       'settings' => array('max_length' => 255),
       'instance_settings' => array('text_processing' => 0),
@@ -27,14 +27,14 @@ function text_field_info() {
       'default_formatter' => 'text_default',
     ),
     'text_long' => array(
-      'label' => t('Long text'),
+      'label' => t('Text (long)'),
       'description' => t('This field stores long text in the database.'),
       'instance_settings' => array('text_processing' => 0),
       'default_widget' => 'text_textarea',
       'default_formatter' => 'text_default',
     ),
     'text_with_summary' => array(
-      'label' => t('Long text and summary'),
+      'label' => t('Text (long with summary)'),
       'description' => t('This field stores long text in the database along with optional summary text.'),
       'instance_settings' => array('text_processing' => 1, 'display_summary' => 0),
       'default_widget' => 'text_textarea_with_summary',
@@ -231,7 +231,7 @@ function text_field_formatter_settings_summary($field, $instance, $view_mode) {
   $summary = '';
 
   if (strpos($display['type'], '_trimmed') !== FALSE) {
-    $summary = t('Trim length') . ': ' . $settings['trim_length'];
+    $summary = t('Trim length') . ': ' . check_plain($settings['trim_length']);
   }
 
   return $summary;
@@ -501,7 +501,7 @@ function text_field_widget_form(&$form, &$form_state, $field, $instance, $langco
         '#rows' => $instance['widget']['settings']['summary_rows'],
         '#description' => t('Leave blank to use trimmed value of full text as the summary.'),
         '#attached' => array(
-          'js' => array(backdrop_get_path('module', 'text') . '/text.js'),
+          'js' => array(backdrop_get_path('module', 'text') . '/js/text.js'),
         ),
         '#attributes' => array('class' => array('text-summary')),
         '#prefix' => '<div class="text-summary-wrapper">',

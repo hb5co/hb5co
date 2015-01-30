@@ -288,21 +288,14 @@ function system_requirements($phase) {
   }
 
   // Test files directories.
-  $directories = array(
-    config_get('system.core', 'file_public_path'),
-    // By default no private files directory is configured. For private files
-    // to be secure the admin needs to provide a path outside the webroot.
-    config_get('system.core', 'file_private_path'),
-  );
-
-  // Do not check for the temporary files directory during installation
-  // unless it has been set in settings.php. In this case the user has
-  // no alternative but to fix the directory if it is not writable.
-  if ($phase == 'install') {
-    $directories[] = config_get('system.core', 'file_temporary_path');
+  $directories = array();
+  if ($phase == 'runtime') {
+    $directories[] = config_get('system.core', 'file_public_path');
+    $directories[] = config_get('system.core', 'file_private_path');
+    $directories[] = file_directory_temp();
   }
   else {
-    $directories[] = file_directory_temp();
+    $directories[] = 'files';
   }
 
   $requirements['file system'] = array(
@@ -315,12 +308,10 @@ function system_requirements($phase) {
     if (!$directory) {
       continue;
     }
-    if ($phase == 'install') {
-      file_prepare_directory($directory, FILE_CREATE_DIRECTORY);
-    }
+    $prepared = file_prepare_directory($directory, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS);
     $is_writable = is_writable($directory);
     $is_directory = is_dir($directory);
-    if (!$is_writable || !$is_directory) {
+    if (!$prepared || !$is_writable || !$is_directory) {
       $description = '';
       $requirements['file system']['value'] = $t('Not writable');
       if (!$is_directory) {
@@ -1990,9 +1981,7 @@ function system_update_1022() {
  * Enable admin_bar, replacing the renamed admin_menu.
  */
 function system_update_1023() {
-  if (!module_exists('admin_bar')) {
-    module_enable(array('admin_bar'));
-  }
+  // This update is no longer necessary and has been removed.
 }
 
 /**
@@ -2406,6 +2395,41 @@ function system_update_1031() {
     $config->save();
     $action_config->delete();
   }
+}
+
+/**
+ * Enable config module.
+ */
+function system_update_1032() {
+  update_module_enable(array('config'));
+}
+
+/**
+ * Set the minimum page cache lifetime to 5 minutes by default.
+ */
+function system_update_1033() {
+  $config = config('system.core');
+  if ($config->get('page_cache_maximum_age') == 0) {
+    $config->set('page_cache_maximum_age', 300);
+    $config->save();
+  }
+}
+
+/**
+ * Set the theme_debug flag to FALSE.
+ */
+function system_update_1034() {
+  config_set('system.core', 'theme_debug', FALSE);
+}
+
+/**
+ * Set the weight of Layout module to run last.
+ */
+function system_update_1035() {
+  // This is in system module because Layout module was enabled earlier in the
+  // upgrade path from D7. If it is in layout.install, it requires that
+  // update.php be run twice when doing an upgrade.
+  db_query("UPDATE {system} SET weight = 60 WHERE name = 'layout' AND type = 'module'");
 }
 
 /**

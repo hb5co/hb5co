@@ -66,11 +66,11 @@ td.active {
   margin: 0 0 0.75em 0;
   padding: 0;
 }
-.item-list ul li {
+.item-list li {
   margin: 0 0 0.25em 1.5em; /* LTR */
   padding: 0;
 }
-[dir="rtl"] .item-list ul li {
+[dir="rtl"] .item-list li {
   margin: 0 1.5em 0.25em 0;
 }
 
@@ -402,12 +402,10 @@ ul.secondary {
   margin: 5px;
 }
 ul.secondary li {
-  border-right: 1px solid #ccc; /* LTR */
   display: inline;
   padding: 0 1em;
 }
 [dir="rtl"] ul.secondary li {
-  border-left: 1px solid #ccc;
   border-right: none;
   display: inline;
   padding: 0 1em;
@@ -440,11 +438,11 @@ div.status {
   border-color: #be7;
 }
 div.status,
-.ok {
+.status {
   color: #234600;
 }
 div.status,
-table tr.ok {
+table tr.status {
   background-color: #f8fff0;
 }
 

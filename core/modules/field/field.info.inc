@@ -67,7 +67,7 @@ function field_info_cache_clear() {
  * @see _field_info_collate_types_reset()
  */
 function _field_info_collate_types() {
-  global $language_interface;
+  global $language;
 
   // Use the advanced backdrop_static() pattern, since this is called very often.
   static $backdrop_static_fast;
@@ -79,7 +79,7 @@ function _field_info_collate_types() {
 
   // The _info() hooks invoked below include translated strings, so each
   // language is cached separately.
-  $langcode = $language_interface->langcode;
+  $langcode = $language->langcode;
 
   if (!isset($info)) {
     if ($cached = cache('field')->get("field_info_types:$langcode")) {
@@ -151,7 +151,11 @@ function _field_info_collate_types() {
       }
       backdrop_alter('field_storage_info', $info['storage types']);
 
-      cache('field')->set("field_info_types:$langcode", $info);
+      // Set the cache only if we can acquire a lock.
+      if (lock_acquire("field_info_types:$langcode")) {
+        cache('field')->set("field_info_types:$langcode", $info);
+        lock_release("field_info_types:$langcode");
+      }
     }
   }
 

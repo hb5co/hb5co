@@ -251,7 +251,7 @@ function update_get_project_name($file) {
   if (isset($file->info['project'])) {
     $project_name = $file->info['project'];
   }
-  elseif (isset($file->info['package']) && (strpos($file->info['package'], 'Core') === 0)) {
+  elseif (isset($file->info['package']) && (strpos($file->info['package'], 'System') === 0)) {
     $project_name = 'backdrop';
   }
   return $project_name;
@@ -344,7 +344,7 @@ function update_calculate_project_data($available) {
   update_process_project_info($projects);
   foreach ($projects as $project => $project_info) {
     if (isset($available[$project])) {
-      update_calculate_project_update_status($project, $projects[$project], $available[$project]);
+      update_calculate_project_update_status($projects[$project], $available[$project]);
     }
     else {
       $projects[$project]['status'] = UPDATE_UNKNOWN;
@@ -417,14 +417,12 @@ function update_calculate_project_data($available) {
  * version (e.g., 5.x-1.5-beta1, 5.x-1.5-beta2, and 5.x-1.5). Development
  * snapshots for a given major version are always listed last.
  *
- * @param $project
- *   An array containing information about a specific project.
  * @param $project_data
  *   An array containing information about a specific project.
  * @param $available
  *   Data about available project releases of a specific project.
  */
-function update_calculate_project_update_status($project, &$project_data, $available) {
+function update_calculate_project_update_status(&$project_data, $available) {
   foreach (array('title', 'link') as $attribute) {
     if (!isset($project_data[$attribute]) && isset($available[$attribute])) {
       $project_data[$attribute] = $available[$attribute];
@@ -472,6 +470,15 @@ function update_calculate_project_update_status($project, &$project_data, $avail
       case 'not-fetched':
         $project_data['status'] = UPDATE_NOT_FETCHED;
         $project_data['reason'] = t('Failed to get available update data.');
+        break;
+      case 'not-implemented':
+        $project_data['status'] = UPDATE_NOT_IMPLEMENTED;
+        $project_data['reason'] = t('Update server is not yet implemented.');
+        $project_data['extra'][] = array(
+          'class' => array('project-not-implemented'),
+          'label' => t('Status unknown'),
+          'data' => t('The update server for this project is not yet implemented. Once completed, the update server will start reporting available updates here. Until then, please check for updates manually.'),
+        );
         break;
 
       default:
