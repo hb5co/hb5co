@@ -60,7 +60,17 @@
  * @ingroup forms
  */
 function update_manager_update_form($form, $form_state = array(), $context) {
-  backdrop_set_title('Update modules');
+  switch ($context) {
+    case 'module':
+      backdrop_set_title('Update modules');
+      break;
+    case 'theme':
+      backdrop_set_title('Update themes');
+      break;
+    case 'report':
+      backdrop_set_title('Update modules & themes');
+      break;
+  }
 
   if (!_update_manager_check_backends($form, 'update')) {
     return $form;
@@ -206,7 +216,7 @@ function update_manager_update_form($form, $form_state = array(), $context) {
 
   if (empty($projects)) {
     $form['message'] = array(
-      '#markup' => t('All of your projects are up to date.'),
+      '#markup' => '<p>' . t('No updates are available for any of your projects.') . '</p>',
     );
     return $form;
   }
@@ -264,23 +274,6 @@ function update_manager_update_form($form, $form_state = array(), $context) {
   }
 
   return $form;
-}
-
-/**
- * Returns HTML for the first page in the process of updating projects.
- *
- * @param $variables
- *   An associative array containing:
- *   - form: A render element representing the form.
- *
- * @ingroup themeable
- */
-function theme_update_manager_update_form($variables) {
-  $form = $variables['form'];
-  $last = state_get('update_last_check', 0);
-  $output = theme('update_last_check', array('last' => $last));
-  $output .= backdrop_render_children($form);
-  return $output;
 }
 
 /**
@@ -675,8 +668,8 @@ function update_manager_install_form_submit($form, &$form_state) {
   $archive_errors = update_manager_archive_verify($project, $local_cache, $directory);
   if (!empty($archive_errors)) {
     form_set_error($field, array_shift($archive_errors));
-    // @todo: Fix me in D8: We need a way to set multiple errors on the same
-    // form element and have all of them appear!
+    // @todo: We need a way to set multiple errors on the same form element and
+    // have all of them appear!
     if (!empty($archive_errors)) {
       foreach ($archive_errors as $error) {
         backdrop_set_message($error, 'error');

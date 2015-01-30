@@ -20,7 +20,7 @@
  *
  * @return array
  *   Each item in the returned array of info should have the following keys:
- *   - name: The human-readable name of the layout.
+ *   - title: The human-readable name of the layout.
  *   - path: A local path within the providing module to files needed by this
  *     layout, such as associated CSS, the icon image, and template file.
  *   - regions: A list of regions this layout provides, keyed by a machine name
@@ -28,7 +28,7 @@
  *   - preview: Optional. An image representing the appearance of this layout.
  *     If left empty, "preview.png" will be used.
  *   - stylesheets: An array of CSS file used whenever this layout is presented.
- *     If left empty, "layout.css" will be used for all media types.
+ *     If left empty, "one-column.css" will be used for all media types.
  *   - template: The name of the template file (without the extension) used for
  *     this layout. All layouts should always be named with a "layout--" prefix,
  *     so that the default variables may be provided in
@@ -51,7 +51,7 @@ function hook_layout_info() {
 
     // Optional information that populates using defaults.
     // 'preview' => 'preview.png',
-    // 'stylesheets' => array('all' => array('layout.css')),
+    // 'stylesheets' => array('all' => array('one-column.css')),
     // 'template' => 'layout--my-layout',
 
     // Specify a file containing preprocess functions if needed.
@@ -325,7 +325,7 @@ function hook_block_configure($delta = '', $settings = array()) {
       '#type' => 'select',
       '#title' => t('Number of recent content items to display'),
       '#default_value' => $settings['node_count'],
-      '#options' => backdrop_map_assoc(array(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 25, 30)),
+      '#options' => range(2, 30),
     );
   }
   return $form;

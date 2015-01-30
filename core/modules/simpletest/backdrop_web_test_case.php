@@ -195,15 +195,7 @@ abstract class BackdropTestCase {
     );
 
     // Store assertion for display after the test has completed.
-    try {
-      $connection = Database::getConnection('default', 'simpletest_original_default');
-    }
-    catch (DatabaseConnectionNotDefinedException $e) {
-      // If the test was not set up, the simpletest_original_default
-      // connection does not exist.
-      $connection = Database::getConnection('default', 'default');
-    }
-    $connection
+    self::getDatabaseConnection()
       ->insert('simpletest')
       ->fields($assertion)
       ->execute();
@@ -216,6 +208,25 @@ abstract class BackdropTestCase {
     else {
       return FALSE;
     }
+  }
+
+  /**
+   * Returns the database connection to the site running Simpletest.
+   *
+   * @return DatabaseConnection
+   *   The database connection to use for inserting assertions.
+   */
+  public static function getDatabaseConnection() {
+    try {
+      $connection = Database::getConnection('default', 'simpletest_original_default');
+    }
+    catch (DatabaseConnectionNotDefinedException $e) {
+      // If the test was not set up, the simpletest_original_default
+      // connection does not exist.
+      $connection = Database::getConnection('default', 'default');
+    }
+
+    return $connection;
   }
 
   /**
@@ -257,7 +268,8 @@ abstract class BackdropTestCase {
       'file' => $caller['file'],
     );
 
-    return db_insert('simpletest')
+    return self::getDatabaseConnection()
+      ->insert('simpletest')
       ->fields($assertion)
       ->execute();
   }
@@ -273,7 +285,8 @@ abstract class BackdropTestCase {
    * @see BackdropTestCase::insertAssert()
    */
   public static function deleteAssert($message_id) {
-    return (bool) db_delete('simpletest')
+    return (bool) self::getDatabaseConnection()
+      ->delete('simpletest')
       ->condition('message_id', $message_id)
       ->execute();
   }
@@ -1408,10 +1421,10 @@ class BackdropWebTestCase extends BackdropTestCase {
    * @see BackdropWebTestCase::tearDown()
    */
   protected function prepareEnvironment() {
-    global $user, $language_interface, $settings, $config_directories;
+    global $user, $language, $settings, $config_directories;
 
     // Store necessary current values before switching to prefixed database.
-    $this->originalLanguage = $language_interface;
+    $this->originalLanguage = $language;
     $this->originalLanguageDefault = config_get('system.core', 'language_default');
     $this->originalConfigDirectories = $config_directories;
     $this->originalFileDirectory = config_get('system.core', 'file_public_path', 'files');
@@ -1423,7 +1436,7 @@ class BackdropWebTestCase extends BackdropTestCase {
     // Set to English to prevent exceptions from utf8_truncate() from t()
     // during install if the current language is not 'en'.
     // The following array/object conversion is copied from language_default().
-    $language_interface = (object) array(
+    $language = (object) array(
       'langcode' => 'en',
       'name' => 'English',
       'direction' => 0,
@@ -1500,7 +1513,7 @@ class BackdropWebTestCase extends BackdropTestCase {
    * @see BackdropWebTestCase::prepareEnvironment()
    */
   protected function setUp() {
-    global $user, $language_interface, $conf;
+    global $user, $language, $conf;
 
     // Create the database prefix for this test.
     $this->prepareDatabasePrefix();
@@ -1602,7 +1615,7 @@ class BackdropWebTestCase extends BackdropTestCase {
 
     // Set up English language.
     unset($conf['language_default']);
-    $language_interface = language_default();
+    $language = language_default();
 
     // Use the test mail class instead of the default mail handler class.
     config_set('system.mail', 'default-system', 'TestingMailSystem');
@@ -1662,7 +1675,7 @@ class BackdropWebTestCase extends BackdropTestCase {
    * and reset the database prefix.
    */
   protected function tearDown() {
-    global $user, $language_interface, $settings, $config_directories;
+    global $user, $language, $settings, $config_directories;
 
     // In case a fatal error occurred that was not in the test process read the
     // log to pick up any fatal errors.
@@ -1737,7 +1750,7 @@ class BackdropWebTestCase extends BackdropTestCase {
     $GLOBALS['conf']['file_public_path'] = $this->originalFileDirectory;
 
     // Reset language.
-    $language_interface = $this->originalLanguage;
+    $language = $this->originalLanguage;
     if ($this->originalLanguageDefault) {
       $GLOBALS['conf']['language_default'] = $this->originalLanguageDefault;
     }
@@ -2351,6 +2364,8 @@ class BackdropWebTestCase extends BackdropTestCase {
             break;
           case 'restripe':
             break;
+          case 'addCss':
+            break;
         }
       }
       $content = $dom->saveHTML();
@@ -2748,31 +2763,26 @@ class BackdropWebTestCase extends BackdropTestCase {
    *
    * Will click the first link found with this link text by default, or a later
    * one if an index is given. Match is case sensitive with normalized space.
-   * The label is translated label. There is an assert for successful click.
+   * The label is translated label.
+   *
+   * If the link is discovered and clicked, the test passes. Fail otherwise.
    *
    * @param $label
    *   Text between the anchor tags.
    * @param $index
    *   Link position counting from zero.
    * @return
-   *   Page on success, or FALSE on failure.
+   *   Page contents on success, or FALSE on failure.
    */
   protected function clickLink($label, $index = 0) {
     $url_before = $this->getUrl();
     $urls = $this->xpath('//a[normalize-space(text())=:label]', array(':label' => $label));
-
     if (isset($urls[$index])) {
       $url_target = $this->getAbsoluteUrl($urls[$index]['href']);
-    }
-    else {
-      $url_target = '';
-    }
-
-    $this->assertTrue(isset($urls[$index]), t('Clicked link %label (@url_target) from @url_before', array('%label' => $label, '@url_target' => $url_target, '@url_before' => $url_before)), t('Browser'));
-
-    if (!empty($url_target)) {
+      $this->pass(t('Clicked link %label (@url_target) from @url_before', array('%label' => $label, '@url_target' => $url_target, '@url_before' => $url_before)), 'Browser');
       return $this->backdropGet($url_target);
     }
+    $this->fail(t('Link %label does not exist on @url_before', array('%label' => $label, '@url_before' => $url_before)), 'Browser');
     return FALSE;
   }
 
