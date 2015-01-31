@@ -1,0 +1,39 @@
+@charset "UTF-8";
+
+/**
+ * Misc
+========================================*/
+img{
+  max-width: 100%;
+  height: auto;
+}
+
+/**
+ * Header/Nav
+========================================*/
+#header nav{
+  margin-bottom: 0px;
+}
+
+/**
+ * Front
+========================================*/
+.front .hero-block{
+  height:550px;
+  background: url(/themes/hb5/assets/images/hero.jpg) no-repeat top center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.front .logo-block{
+  position: absolute;
+  left:50%;
+  margin-left: -130px;
+  margin-top: -130px;
+  width:260px;
+  height: 260px;
+  background: #333;
+  border-radius: 50%;
+  padding:25px;
+}
