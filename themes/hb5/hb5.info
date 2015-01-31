@@ -1,0 +1,12 @@
+name        = hb5 Theme
+description = A subtheme of the radix theme.
+screenshot  = screenshot.png
+version = BACKDROP_VERSION
+backdrop = 1.x
+base theme = radix
+
+; CSS - General
+stylesheets[all][]     = assets/stylesheets/hb5-style.css
+
+; Javascript
+scripts[] = assets/javascripts/hb5-script.js
