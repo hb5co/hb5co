@@ -1,0 +1,8 @@
+name = reCAPTCHA
+description = Verifies if user is a human without necessity to solve a captcha
+backdrop = 1.x
+package = Spam control
+dependencies[] = captcha
+configure = admin/config/people/captcha/recaptcha
+
+version = 1.x-1.x
