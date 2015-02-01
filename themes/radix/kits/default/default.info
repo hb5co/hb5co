@@ -1,0 +1,16 @@
+name        = {{Name}}
+description = {{Description}}
+screenshot  = screenshot.png
+version = BACKDROP_VERSION
+backdrop = 1.x
+
+; Base - Radix
+base theme  = radix
+hidden = TRUE
+
+; CSS - General
+stylesheets[all][]     = assets/stylesheets/screen.css
+stylesheets[print][]   = assets/stylesheets/print.css
+
+; Javascript
+scripts[] = assets/javascripts/script.js
