@@ -4,12 +4,6 @@
  * Theme hooks for hb5.
  */
 
-/**
- * Implements template_preprocess_html().
- */
-function hb5_preprocess_html(&$variables) {
-
-}
 
 /**
  * Implements template_preprocess_page().
@@ -94,5 +88,12 @@ function hb5_preprocess_page(&$variables) {
     ),
   );
   drupal_add_html_head($header_bar_theme_color, 'header_bar_theme_color');
+}
+
+/**
+ * Implements hook_preprocess_node(&$variables).
+ */
+function hb5_preprocess_node(&$variables) {
+  // dpm($variables);
 }
 
