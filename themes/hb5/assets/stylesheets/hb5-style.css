@@ -3,6 +3,13 @@
 /**
  * Misc
 ========================================*/
+*{
+  -webkit-transition: all 0.3s ease-in-out;                  
+  -moz-transition: all 0.3s ease-in-out;                 
+  -o-transition: all 0.3s ease-in-out;   
+  -ms-transition: all 0.3s ease-in-out;          
+  transition: all 0.3s ease-in-out;
+}
 img{
   max-width: 100%;
   height: auto;
@@ -29,8 +36,9 @@ body{
  * Front
 ========================================*/
 .front .hero-block{
-  height:550px;
-  background: url(/themes/hb5/assets/images/hero.jpg) no-repeat bottom center fixed; 
+  height:300px;
+  background-image: url(/themes/hb5/assets/images/hero.jpg);
+  background-position: center bottom;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -41,10 +49,10 @@ body{
   content:"";
   position: absolute;
   left:50%;
-  bottom:-110px;
-  margin-left: -110px;
-  width:220px;
-  height: 220px;
+  top:110px;
+  margin-left: -40px;
+  width:80px;
+  height: 80px;
   background:#3BD0AA;
   border-radius: 50%;
 }
@@ -52,15 +60,52 @@ body{
   content:"";
   position: absolute;
   left:50%;
-  bottom:-80px;
-  margin-left: -80px;
-  width:160px;
-  height: 160px;
+  top:120px;
+  margin-left: -30px;
+  width:60px;
+  height: 60px;
   background-image: url(/files/hb5_logo.png);
   background-position: center center;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+}
+@media (min-width: 768px) {
+  .front .hero-block{
+    background-attachment: fixed;
+    height:550px;
+    margin-bottom: 90px;
+  }
+  .front .hero-block:before{
+    top:auto;
+    height: 160px;
+    width:160px;
+    margin-left: -80px;
+    bottom:-80px;
+  }
+  .front .hero-block:after{
+    top:auto;
+    height: 120px;
+    width:120px;
+    margin-left: -60px;
+    bottom:-60px;
+  }
+}
+.front .hb5-home-people-first,
+.front .hb5-home-giving,
+.front .hb5-home-always-learning,
+.front .hb5-home-choice {
+  padding:40px 0;
+  font-size: 20px;
+}
+@media (min-width: 768px) {
+  .front .hb5-home-people-first,
+  .front .hb5-home-giving,
+  .front .hb5-home-always-learning,
+  .front .hb5-home-choice {
+    padding:80px 0;
+  }
+
 }
 
