@@ -63,3 +63,11 @@ body{
   -o-background-size: cover;
   background-size: cover;
 }
+
+/**
+ * Footer
+========================================*/
+#footer .block-title {
+  display: none;
+}
+
