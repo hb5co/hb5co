@@ -64,10 +64,3 @@ body{
   background-size: cover;
 }
 
-/**
- * Footer
-========================================*/
-#footer .block-title {
-  display: none;
-}
-
