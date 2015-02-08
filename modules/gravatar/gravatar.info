@@ -1,0 +1,6 @@
+name = Gravatar
+description = "Integrate Gravatar pictures registered at Gravatar.com in Drupal sites"
+version = 1.x
+backdrop = 1.x
+configure = admin/config/people/gravatar
+

@@ -1,0 +1,131 @@
+<?php
+/**
+ * @file
+ * Install and uninstall schema and functions for the gravatar module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function gravatar_schema() {
+  $schema['cache_gravatar'] = backdrop_get_schema_unprocessed('system', 'cache');
+  $schema['cache_gravatar']['description'] = 'Cache table for the Gravatar module to store already processed and cached images.';
+  return $schema;
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function gravatar_uninstall() {
+  // Remove variables.
+  backdrop_load('module', 'gravatar');
+  $variables = array_keys(gravatar_variables());
+  foreach ($variables as $variable) {
+    variable_del($variable);
+  }
+}
+
+/**
+ * Checks requirements for Gravatar.
+ */
+function gravatar_check_requirements() {
+  $requirements = gravatar_requirements('runtime');
+  if (!empty($requirements['gravatar'])) {
+    backdrop_set_message(t('Please check the following potential issues: !issues', array('!issues' => $requirements['gravatar']['description'])), 'warning', FALSE);
+  }
+}
+
+/**
+ * Implements hook_requirements().
+ */
+function gravatar_requirements($phase) {
+  $requirements = array();
+  $notifications = array();
+
+  if ($phase == 'runtime') {
+    // Warn if picture support is disabled.
+    if (!config_get('system.core', 'user_pictures')) {
+      $notifications[] = 'Make sure <a href="' . url('admin/config/people/settings', array('fragment' => 'edit-user-pictures-0-wrapper')) . '">user picture support</a> is enabled to allow gravatar integration.';
+    }
+
+    // Warn if no user roles have access to the 'user gravatar' permission.
+    $user_roles = user_roles(FALSE, 'use gravatar');
+    if (empty($user_roles)) {
+      $notifications[] = 'There are no user roles that have the <a href="' . url('admin/people/permissions', array('fragment' => 'module-gravatar')) . '">use gravatar permission</a>.';
+    }
+
+    // Warn if user pictures are not enabled in the theme.
+    // @todo Stupid theme_get_settings generates errors on status report page.
+    $default_theme = config_get('system.core', 'theme_default');
+
+    if (!theme_get_setting('toggle_comment_user_picture', $theme = NULL) && !theme_get_setting('toggle_node_user_picture', $theme = NULL)) {
+      $notifications[] = 'Make sure user pictures are enabled in your <a href="' . url('admin/appearance/settings/' . $default_theme) . '">theme</a> settings.';
+    }
+
+    $global_default_image = config_get('system.core', 'user_picture_default');
+    if (!$global_default_image) {
+      if (gravatar_var('default') == GRAVATAR_DEFAULT_GLOBAL) {
+        // Warn if global default user picture is empty and used for default
+        // gravatar image.
+        $notifications[] = 'You have selected the global default user picture for the default gravatar picture, but you have not specified a <a href="' . url('admin/config/people/settings', array('fragment' => 'edit-user-picture-default')) . '">global default user picture</a>.';
+      }
+    }
+    else {
+      // Warn if the global default user image exceeds the user picture
+      // dimensions.
+      $info = function_exists('getimagesize') ? @getimagesize($global_default_image) : array();
+      $dimensions = explode('x', config_get('system.core', 'user_picture_dimensions'));
+      if ($info && ($info[0] > $dimensions[0] || $info[1] > $dimensions[1])) {
+        // @todo Create link to automatically resize image?
+        $notifications[] = 'Your <a href="' . $global_default_image . '">global default user picture</a> is too large (' . $info[0] . 'x' . $info[1] . ' pixels) and may not display properly. Please resize it to fit the <a href="' . url('admin/config/people/settings', array('fragment' => 'edit-user-picture-default')) . '">preferred user picture size</a> (' . implode('x', $dimensions) . ' pixels).';
+      }
+    }
+  }
+
+  if (!empty($notifications)) {
+    $requirements['gravatar'] = array(
+      'title' => 'Gravatar',
+      'value' => 'Potential issues',
+      'description' => theme('item_list', array('items' => $notifications)),
+      'severity' => REQUIREMENT_WARNING,
+    );
+  }
+
+  return $requirements;
+}
+
+/**
+ * Variable and menu cleanup.
+ */
+function gravatar_update_6000() {
+  // Integrate gravatar_defaulttype config into the gravatar_imagedefault
+  // config.
+  if (config_get('gravatar_config.settings', 'gravatar_imagedefault', 2) == 2) {
+    $value = (int) config_get('gravatar_config.settings', 'gravatar_default_type', 4);
+    config_set('gravatar_config.settings', 'gravatar_imagedefault', $value + 2);
+    config_del('gravatar_config.settings', 'gravatar_default_type');
+  }
+
+  // Rename gravatar_imagerating config to gravatar_rating.
+  if ($value = config_get('gravatar_config.settings', 'gravatar_imagerating', FALSE)) {
+    config_set('gravatar_config.settings', 'gravatar_rating', $value);
+    config_del('gravatar_config.settings', 'gravatar_imagerating');
+  }
+
+  // Rename gravatar_imagedefault to gravatar_default.
+  if ($value = config_get('gravatar_config.settings', 'gravatar_imagedefault', FALSE)) {
+    config_set('gravatar_config.settings', 'gravatar_default', $value);
+    config_del('gravatar_config.settings', 'gravatar_imagedefault');
+  }
+
+  // Rename gravatar_displaysize to gravatar_size.
+  if ($value = config_get('gravatar_config.settings', 'gravatar_displaysize', FALSE)) {
+    config_set('gravatar_config.settings', 'gravatar_size', $value);
+    config_del('gravatar_config.settings', 'gravatar_displaysize');
+  }
+
+  // Install cache table.
+  backdrop_install_schema('gravatar');
+
+  return array();
+}
