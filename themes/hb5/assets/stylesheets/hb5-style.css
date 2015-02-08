@@ -92,6 +92,7 @@ body{
     bottom:-60px;
   }
 }
+.front .hb5-home-company-intro,
 .front .hb5-home-people-first,
 .front .hb5-home-giving,
 .front .hb5-home-always-learning,
@@ -100,6 +101,7 @@ body{
   font-size: 20px;
 }
 @media (min-width: 768px) {
+  .front .hb5-home-company-intro,
   .front .hb5-home-people-first,
   .front .hb5-home-giving,
   .front .hb5-home-always-learning,
