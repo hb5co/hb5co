@@ -105,6 +105,9 @@ function hb5_preprocess_page(&$variables) {
  * Implements hook_preprocess_node(&$variables).
  */
 function hb5_preprocess_node(&$variables) {
-  // dpm($variables);
+  $variables['submitted'] = t('Posted by !username - !datetime', array(
+    '!username' => $variables['name'],
+    '!datetime' => date('F j, Y', $variables['node']->created),
+  ));
 }
 
