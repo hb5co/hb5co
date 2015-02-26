@@ -76,7 +76,7 @@
   </main>
 
   <?php if ($content['footer']): ?>
-    <footer id="footer" class="footer" role="footer">
+    <footer id="footer" class="footer two-col-footer" role="footer">
       <div class="container">
         <?php print $content['footer']; ?>
       </div>
