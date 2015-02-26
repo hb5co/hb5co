@@ -51,13 +51,38 @@
     <footer id="hb5-footer">
     	<div class="container">
     		<div class="row">
-				<?php 
-				print "footer content";
-				$block_1 = block_custom_block_load(6);
-				print $block_1['body'];
+  				<?php 
+            $footer_social_menu = menu_block_view('menu-social');
+            $footer_main_menu = menu_block_view('main-menu');
+            $footer_contact = block_block_view('11');
+            $footer_logo = block_block_view('12');
+            $footer_copyright = block_block_view('13');
+          ?>
+          <div class="col-md-3 col-sm-6 footer-hb5-logo">
+            <?php print $footer_logo['content']; ?> 
+          </div>
+          <div class="col-md-3 col-sm-6 footer-main-nav">
+            <?php print backdrop_render($footer_main_menu); ?>
+          </div>
+          <div class="col-md-3 col-sm-6 footer-social-nav">
+            <?php print backdrop_render($footer_social_menu['content']); ?>
+          </div>
+          <div class="col-md-3 col-sm-6 footer-contact-info">
+            <?php print $footer_contact['content']; ?>
+          </div>
+        <?php
 				xdebug_break(); ?>
     		</div>
+      </div>
+      <div class="footer-row-2">
+        <div class="container">
+          <div class="row text-center">
+            dd
+            <?php print $footer_copyright['content']; ?>
+          </div>
+        </div>
     	</div>
+
     </footer>
     <?php print $page_bottom; ?>
     <?php print backdrop_get_js('footer'); ?>
