@@ -25,7 +25,7 @@
  *   - $content['footer']
  */
 ?>
-<div class="layout--two-column <?php print implode(' ', $classes); ?>"<?php print backdrop_attributes($attributes); ?>>
+<div class="layout--one-column <?php print implode(' ', $classes); ?>"<?php print backdrop_attributes($attributes); ?>>
   <div id="skip-link">
     <a href="#main-content" class="element-invisible element-focusable"><?php print t('Skip to main content'); ?></a>
   </div>
@@ -73,7 +73,7 @@
   </main>
 
   <?php if ($content['footer']): ?>
-    <footer id="footer" class="footer" role="footer">
+    <footer id="footer" class="footer one-col-footer" role="footer">
       <div class="container">
         <?php print $content['footer']; ?>
       </div>
