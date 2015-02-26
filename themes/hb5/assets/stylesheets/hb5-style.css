@@ -1,14 +1,16 @@
 @charset "UTF-8";
 
 /**
+ * Brand Color: #3BD0AA;
+
+/**
  * Misc
 ========================================*/
-*{
-  -webkit-transition: all 0.3s ease-in-out;                  
-  -moz-transition: all 0.3s ease-in-out;                 
-  -o-transition: all 0.3s ease-in-out;   
-  -ms-transition: all 0.3s ease-in-out;          
-  transition: all 0.3s ease-in-out;
+*{        
+  -webkit-transform: all 0.3s ease-in-out;;
+  -ms-transform: all 0.3s ease-in-out;;
+  -o-transform: all 0.3s ease-in-out;;
+  transform: all 0.3s ease-in-out;;
 }
 img{
   max-width: 100%;
@@ -40,8 +42,6 @@ body{
   background-image: url(/themes/hb5/assets/images/hero.jpg);
   background-position: center bottom;
   -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
   background-size: cover;
   position: relative;
 }
@@ -67,8 +67,6 @@ body{
   background-image: url(/files/hb5_logo.png);
   background-position: center center;
   -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
   background-size: cover;
 }
 @media (min-width: 768px) {
@@ -100,6 +98,21 @@ body{
   padding:40px 0;
   font-size: 20px;
 }
+.front .hb5-home-people-first .container,
+.front .hb5-home-giving .container,
+.front .hb5-home-always-learning .container,
+.front .hb5-home-choice .container {
+  position: relative;
+}
+.front .home-icon img{
+  display: block;
+  width:200px;
+  height:200px;
+  border-radius:50%;
+  margin:0 auto;
+}
+.front .home-icon img{ background-color: #fff }
+
 @media (min-width: 768px) {
   .front .hb5-home-company-intro,
   .front .hb5-home-people-first,
@@ -108,6 +121,18 @@ body{
   .front .hb5-home-choice {
     padding:80px 0;
   }
+}
 
+/**
+ * Footer
+========================================*/
+#footer{
+  background-color: #181818;
+  padding: 50px 0;
+  color: #aaa;
+  margin-bottom: 0;
+}
+#footer a{
+  color:#3BD0AA;
 }
 
