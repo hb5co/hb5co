@@ -5,15 +5,16 @@
 (function ($, Drupal, window, document, undefined) {
   $(document).ready(function() {
     var navbar = $('.front nav.navbar-default');
-    // Assign .navbar-large to nav on front page
+    // Assign .navbar-large to nav on front page if
+    // current scroll is less than 150px.
     if( $(window).scrollTop() < 150 ) {
       navbar.addClass( 'navbar-large' );
     }
 
-    // Wrap the body contents in .site-content and add a new div for menu
-    $('body').wrapInner('<div class="site-content"></div>').append('<div class="off-canvas"></div>');
+    // Wrap the body contents in .site-content and add a new div for menu.
+    $('body').append('<div class="off-canvas"></div>');
 
-    // Clone main menu and use as off canvas menu
+    // Clone main menu and use as off canvas menu.
     $('ul#main-menu').clone().appendTo('.off-canvas').removeAttr('id').attr('id', 'off-canvas-menu');
 
     var siteContent = $('.site-content');
@@ -36,7 +37,7 @@
           'translateX':'0px'
         }, 'easeInSine');
 
-        // Animating mobile menu icon
+        // Animating mobile menu icon.
         $(iconBar1).velocity('reverse');
         $(iconBar2).velocity('reverse');
         $(iconBar3).velocity('fadeIn', { display: 'block', delay: '250'});
@@ -55,7 +56,7 @@
           'translateX':'-280px'
         }, 'easeInSine');        
 
-        // Animating mobile menu icon
+        // Animating mobile menu icon.
         $(iconBar1).velocity({ 'rotateZ':'405deg' });
         $(iconBar2).velocity({ 'rotateZ':'-405deg', 'translateY':'-4px', 'translateX':'4px;' });
         $(iconBar3).velocity( 'fadeOut' );
