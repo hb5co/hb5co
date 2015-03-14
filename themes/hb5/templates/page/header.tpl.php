@@ -31,7 +31,7 @@
           <span class="icon-bar"></span>
         </button>
         <a href="<?php print $front_page; ?>" id="logo" class="navbar-brand">
-          <?php print $site_name; ?>
+          <img src="/themes/hb5/assets/images/hb5_logo_sm_white.png" alt="<?php print $site_name; ?>">
         </a>
       </div> <!-- /.navbar-header -->
 
