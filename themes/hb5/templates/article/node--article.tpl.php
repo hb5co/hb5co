@@ -14,6 +14,14 @@
   <?php endif; ?>
   <?php print render($title_suffix); ?>
 
+  <?php print $user_picture; ?>
+
+  <?php if ($display_submitted): ?>
+    <div class="submitted">
+      <?php print $submitted; ?>
+    </div>
+  <?php endif; ?>
+
   <div class="content">
     <?php
     // We hide the comments and links now so that we can render them later.
@@ -22,14 +30,6 @@
     print render($content);
     ?>
   </div>
-
-  <?php print $user_picture; ?>
-
-  <?php if ($display_submitted): ?>
-    <div class="submitted">
-      <?php print $submitted; ?>
-    </div>
-  <?php endif; ?>
 
   <?php print render($content['links']); ?>
 
