@@ -59,7 +59,7 @@
  * @ingroup themeable
  */
 ?>
-<div class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
+<div class="<?php print implode(' ', $classes); ?> clearfix"<?php print $attributes; ?>>
   <div class="media">
     <?php print $picture ?>
 

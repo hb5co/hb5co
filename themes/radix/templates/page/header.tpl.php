@@ -19,9 +19,9 @@
  * - $menu: The menu for the header (if any), as an HTML string.
  */
 ?>
-<header id="header" class="header" role="header">
-  <div class="container">
-    <nav class="navbar navbar-default" role="navigation">
+
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
@@ -46,6 +46,5 @@
           <?php print $search_form; ?>
         <?php endif; ?>
       </div><!-- /.navbar-collapse -->
-    </nav><!-- /.navbar -->
-  </div> <!-- /.container -->
-</header>
+    </div> <!-- /.container -->
+  </nav><!-- /.navbar -->

@@ -7,7 +7,7 @@
     <?php print $styles; ?>
     <?php print $scripts; ?>
   </head>
-  <body class="<?php print $classes; ?>">
+  <body class="<?php print implode(' ', $classes); ?>">
 
   <header id="header" class="header" role="header">
     <nav class="navbar navbar-default navbar-static-top" role="navigation">
