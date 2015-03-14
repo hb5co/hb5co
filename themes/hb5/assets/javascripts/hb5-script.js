@@ -3,29 +3,20 @@
  * JS for Radix.
  */
 (function ($, Drupal, window, document, undefined) {
-
-  // Show dropdown on hover.
-  Drupal.behaviors.radix_dropdown = {
-    attach: function(context, setting) {
-      $('.dropdown').once('radix-dropdown', function(){
-        // Show dropdown on hover.
-        $(this).mouseenter(function(){
-          $(this).addClass('open');
-        });
-        $(this).mouseleave(function(){
-          $(this).removeClass('open');
-        });
-      });
-    }
-  }
-
   $(document).ready(function() {
-    // Allow main menu dropdown-toggle to be clickable.
-    $('#main-menu .dropdown > a.dropdown-toggle').once('radix-dropdown', function(){
-      $(this).click(function(e) {
-        e.preventDefault();
-        window.location.href = $(this).attr('href');
-      });
-    });
+    if( $(window).scrollTop() < 150 ) {
+      $('.front nav.navbar-default').addClass( 'navbar-large' );
+    }
+  });
+
+  $(window).scroll(function (event) {
+    var scroll = $(window).scrollTop();
+    var navbar = $( '.front nav.navbar-default' );
+
+    if( scroll > 150 ) {
+      navbar.removeClass( 'navbar-large' );
+    } else {
+      navbar.addClass( 'navbar-large' );
+    }
   });
 })(jQuery, Drupal, this, this.document);
