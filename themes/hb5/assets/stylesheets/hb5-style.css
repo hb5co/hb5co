@@ -81,6 +81,7 @@ body.admin-bar #header nav {
   -ms-transition: all 0.3s ease-in-out;          
   transition: all 0.3s ease-in-out;
   box-shadow: inset 0px 0px 0px 0px #3BD0AA;
+  font-family: 'Istok Web', sans-serif;
 }
 .navbar-inverse .navbar-nav > li > a:hover {
   box-shadow: inset 0px 50px 0px 0px #3BD0AA;
