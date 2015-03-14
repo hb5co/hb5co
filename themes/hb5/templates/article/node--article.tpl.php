@@ -6,7 +6,7 @@
  */
 ?>
 
-<article class="<?php print $classes; ?> clearfix">
+<article class="<?php print implode(' ', $classes); ?> clearfix">
 
   <?php print render($title_prefix); ?>
   <?php if (!$page): ?>
