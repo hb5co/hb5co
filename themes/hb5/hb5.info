@@ -10,3 +10,4 @@ stylesheets[all][]     = assets/stylesheets/hb5-style.css
 
 ; Javascript
 scripts[] = assets/javascripts/hb5-script.js
+scripts[] = assets/javascripts/velocity.min.js
