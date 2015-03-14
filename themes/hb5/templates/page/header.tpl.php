@@ -20,18 +20,18 @@
  */
 ?>
 <header id="header" class="header" role="header">
-  <nav class="navbar navbar-default navbar-inverse" role="navigation">
+  <nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+        <button type="button" class="navbar-toggle">
           <span class="sr-only"><?php print t('Toggle navigation'); ?></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
         <a href="<?php print $front_page; ?>" id="logo" class="navbar-brand">
-          <?php print $site_name; ?>
+          <img src="/themes/hb5/assets/images/hb5_logo_sm_white.png" alt="<?php print $site_name; ?>">
         </a>
       </div> <!-- /.navbar-header -->
 

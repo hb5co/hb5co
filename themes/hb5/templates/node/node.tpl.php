@@ -11,7 +11,7 @@
  * @ingroup themeable
  */
 ?>
-<article class="<?php print $classes; ?> clearfix">
+<article class="<?php print implode(' ', $classes); ?> clearfix">
 
   <?php print $user_picture; ?>
 

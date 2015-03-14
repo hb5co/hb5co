@@ -33,7 +33,7 @@ if (!isset($pager_position)) {
     $style = 'width:' . $slides_max_width . 'px; height:' . $slides_max_height . 'px';
   } ?>
 
-  <div class="<?php print $classes; ?>" style="<?php print $style; ?>">
+  <div class="<?php print implode(' ', $classes); ?>" style="<?php print $style; ?>">
     <?php foreach ($items as $num => $item) : ?>
       <div class="<?php print $item['classes']; ?>"<?php if ($num) : ?> style="display:none;"<?php endif; ?>>
         <?php print $item['image']; ?>
