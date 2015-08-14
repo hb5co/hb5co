@@ -22,7 +22,7 @@ h6, .h6 {
 /**
  * Misc
 ========================================*/
-* {        
+* {
   -webkit-transform: all 0.3s ease-in-out;;
   -ms-transform: all 0.3s ease-in-out;;
   -o-transform: all 0.3s ease-in-out;;
@@ -45,7 +45,9 @@ body {
   line-height: 1.65;
   color:#555;
 }
-.main.container {
+body > div { padding-top: 90px; }
+body.front > div { padding-top: 0px; }
+.front .main.container {
   padding-top:45px;
   padding-bottom: 45px;
 }
@@ -59,6 +61,9 @@ body {
 /**
  * Header/Nav
 ========================================*/
+.block-system-breadcrumb {
+  display: none;
+}
 #header nav {
   margin-bottom: 0px;
   border-radius: 0px;
@@ -76,9 +81,9 @@ body.admin-bar #header nav {
 .navbar-inverse .navbar-nav > li > a {
   color:#d1d1d1;
   position: relative;
-  -moz-transition: all 0.3s ease-in-out;                 
-  -o-transition: all 0.3s ease-in-out;   
-  -ms-transition: all 0.3s ease-in-out;          
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
   box-shadow: inset 0px 0px 0px 0px #3BD0AA;
   font-family: 'Istok Web', sans-serif;
@@ -96,16 +101,16 @@ body.admin-bar #header nav {
   border-bottom: 5px solid #3BD0AA;
 }
 .navbar-default {
-  -moz-transition: all 0.3s ease-in-out;                 
-  -o-transition: all 0.3s ease-in-out;   
-  -ms-transition: all 0.3s ease-in-out;          
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 @media all and (min-width: 768px) {
   .navbar-large {
     padding-top:25px;
     padding-bottom: 25px;
-    -webkit-transition: all 0.3s ease-in-out;                  
+    -webkit-transition: all 0.3s ease-in-out;
   }
   .navbar-large a#logo {
     width: 85px;
@@ -122,9 +127,9 @@ ul#main-menu {
 }
 a#logo {
   width: 70px;
-  -moz-transition: all 0.3s ease-in-out;                 
-  -o-transition: all 0.3s ease-in-out;   
-  -ms-transition: all 0.3s ease-in-out;          
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
   position: relative;
   top:-5px;
@@ -270,9 +275,9 @@ ul#off-canvas-menu li a:hover {
   border-radius: 50%;
 }
 article.view-mode-teaser *{
-  -moz-transition: all 0.3s ease-in-out;                 
-  -o-transition: all 0.3s ease-in-out;   
-  -ms-transition: all 0.3s ease-in-out;          
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 article.view-mode-teaser {
@@ -283,9 +288,9 @@ article.view-mode-teaser {
   box-shadow: 0 0 3px 0 rgba(0,0,0,.05);
   margin-bottom: 35px;
   position: relative;
-  -moz-transition: all 0.3s ease-in-out;                 
-  -o-transition: all 0.3s ease-in-out;   
-  -ms-transition: all 0.3s ease-in-out;          
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 article.view-mode-teaser h2 {
@@ -345,9 +350,9 @@ article.view-mode-teaser .links {
  * Blog: Full
 ========================================*/
 article.view-mode-full * {
-  -moz-transition: all 0.3s ease-in-out;                 
-  -o-transition: all 0.3s ease-in-out;   
-  -ms-transition: all 0.3s ease-in-out;          
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
 article.view-mode-full .field-name-field-image {
